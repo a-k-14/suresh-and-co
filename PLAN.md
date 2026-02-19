@@ -9,6 +9,7 @@ Recreate the Android app (Java + XML) for **Suresh & Co**, a Chartered Accountan
 - **Min SDK:** 21 (Android 5.0 Lollipop)
 - **Target SDK:** 34
 - **Navigation:** DrawerLayout + NavigationView
+- **Website:** https://sureshandco.com
 
 ---
 
@@ -17,9 +18,9 @@ Recreate the Android app (Java + XML) for **Suresh & Co**, a Chartered Accountan
 |---|---|
 | Primary (blue) | `#1565C0` |
 | Primary Dark | `#003c8f` |
-| Accent (lighter blue) | `#5E92F3` |
+| Accent | `#5E92F3` |
 | Background | `#FFFFFF` |
-| Surface/Card | `#F5F5F5` |
+| Card Surface | `#F5F5F5` |
 | Text Primary | `#212121` |
 | Text Secondary | `#757575` |
 
@@ -31,37 +32,35 @@ Recreate the Android app (Java + XML) for **Suresh & Co**, a Chartered Accountan
 app/
 ├── src/main/
 │   ├── java/com/sureshandco/app/
-│   │   ├── MainActivity.java               ← Home + DrawerLayout host
-│   │   ├── ServicesActivity.java           ← All services with spinner
-│   │   ├── AskQueryActivity.java           ← Query submission form
-│   │   ├── VisionMissionActivity.java      ← Vision & Mission
-│   │   ├── TheTeamActivity.java            ← Team members
-│   │   ├── RecognitionActivity.java        ← Awards & Recognition
-│   │   ├── InsightsActivity.java           ← Insights / Articles
-│   │   ├── CareersActivity.java            ← Careers
+│   │   ├── MainActivity.java
+│   │   ├── ServicesActivity.java
+│   │   ├── AskQueryActivity.java
+│   │   ├── VisionMissionActivity.java
+│   │   ├── TheTeamActivity.java
+│   │   ├── RecognitionActivity.java
+│   │   ├── InsightsActivity.java
+│   │   ├── CareersActivity.java
 │   │   └── model/
-│   │       └── Service.java                ← Service data model
+│   │       └── Service.java
 │   └── res/
 │       ├── layout/
-│       │   ├── activity_main.xml           ← DrawerLayout + home content
-│       │   ├── activity_services.xml       ← Spinner + description
-│       │   ├── activity_ask_query.xml      ← Query form
+│       │   ├── activity_main.xml
+│       │   ├── activity_services.xml
+│       │   ├── activity_ask_query.xml
 │       │   ├── activity_vision_mission.xml
 │       │   ├── activity_the_team.xml
 │       │   ├── activity_recognition.xml
 │       │   ├── activity_insights.xml
 │       │   ├── activity_careers.xml
-│       │   ├── nav_header.xml              ← Drawer header view
-│       │   └── item_service_grid.xml       ← Single service tile (GridView)
+│       │   ├── nav_header.xml
+│       │   └── item_service_grid.xml
 │       ├── menu/
-│       │   └── nav_drawer_menu.xml         ← Drawer navigation items
-│       ├── drawable/
-│       │   └── ic_logo.xml (or PNG)        ← 50-year logo placeholder
+│       │   └── nav_drawer_menu.xml
 │       ├── values/
 │       │   ├── colors.xml
 │       │   ├── strings.xml
-│       │   ├── styles.xml (or themes.xml)
-│       │   └── arrays.xml                  ← Service names, query categories
+│       │   ├── themes.xml
+│       │   └── arrays.xml
 │       └── AndroidManifest.xml
 └── build.gradle
 ```
@@ -70,96 +69,129 @@ app/
 
 ## Screens & Layouts
 
-### 1. MainActivity (Home)
-**Layout:** `activity_main.xml`
-- Root: `DrawerLayout`
-  - Content view: `CoordinatorLayout` > `AppBarLayout` (Toolbar) + `NestedScrollView`
-    - `NestedScrollView` contains a vertical `LinearLayout` with:
-      1. **Header card:** Logo image + "Suresh & Co 50 Years" + tagline "Ever lasting relationship"
-      2. **Ask Expert row:** Blue banner/button — "Ask the expert team your queries →"
-      3. **About Us section:** Heading + body text (2–3 paragraphs about the firm)
-      4. **Vision & Mission / The Team buttons:** Two side-by-side `MaterialButton`s
-      5. **Services section:** Heading + 2-column `GridView` (or `GridLayout`) of 8 service tiles + "All Services →" button
-      6. **Contact Us section:** Card with address, phone, email, website (all clickable with intents)
-  - `NavigationView` (drawer) with `nav_header.xml` + `nav_drawer_menu.xml`
-
-**Java:** Handle drawer toggle, service grid click → `ServicesActivity`, contact intents (dial, email, browser)
+### 1. MainActivity (Home + DrawerLayout)
+- Toolbar: "Suresh & Co" + hamburger icon
+- `NestedScrollView` with:
+  1. **Header:** Logo + "Suresh & Co – 50 Years" + tagline *"Ever lasting relationship"*
+  2. **Ask Expert banner:** Blue strip → "Ask the expert team your queries ›" → opens `AskQueryActivity`
+  3. **About Us card:** Company description text (see content below)
+  4. **Buttons row:** "Vision & Mission" | "The Team"
+  5. **Services section:** 2-column grid of 8 tiles + "All Services →" link
+  6. **Contact Us card:** Address, phone (dial intent), email (mailto intent), website (browser intent)
+- Navigation Drawer (see below)
 
 ### 2. ServicesActivity
-**Layout:** `activity_services.xml`
-- `AppBarLayout` with Toolbar (back arrow + "Services" title)
-- `Spinner` — populated from `Service` objects list
-- `ScrollView` > `TextView` (service description body)
-
-**Java:** Populate spinner with 8 services; on selection changed → update description text
+- Toolbar: back arrow + "Services"
+- Subtitle: "Select the Service to know more"
+- `Spinner` populated with 8 service names
+- `ScrollView` → `TextView` showing selected service description
 
 ### 3. AskQueryActivity
-**Layout:** `activity_ask_query.xml`
-- `AppBarLayout` with Toolbar (back arrow + "Ask Query" title)
-- `ScrollView` > `LinearLayout`:
-  - Introductory description `TextView`
-  - "Select the category for Expert advice:" label + `Spinner` (General, Tax, Audit, Company Law, Others)
-  - `TextInputLayout` > `EditText` — "Please type your query title"
-  - `TextInputLayout` > `EditText` (multiline) — "Please type your query details"
-  - `Button` — "SUBMIT QUERY" (full width, blue)
-
-**Java:** Validate fields; on submit show success dialog/Toast (or send via email Intent)
+- Toolbar: back arrow + "Ask Query"
+- Intro description text
+- Label: "Select the category for Expert advice:"
+- `Spinner`: General, Tax, Audit, Company Law, GST, FEMA, Others
+- `TextInputLayout` → `EditText`: "Please type your query title"
+- `TextInputLayout` → `EditText` (multiline, 4 lines): "Please type your query details"
+- `Button`: "SUBMIT QUERY" (full width, blue) → sends email intent to info@sureshandco.com
 
 ### 4. VisionMissionActivity
-**Layout:** Simple toolbar + `ScrollView` > `TextView`s for Vision & Mission content
+- Toolbar: back arrow + "Vision & Mission"
+- ScrollView with Vision heading + text, Mission heading + text
 
 ### 5. TheTeamActivity
-**Layout:** Toolbar + `RecyclerView` or `LinearLayout` listing team members (name + designation)
+- Toolbar: back arrow + "The Team"
+- ScrollView listing each partner's name, qualification, and bio
 
 ### 6. RecognitionActivity
-**Layout:** Toolbar + `ScrollView` with awards/recognition text or list
+- Toolbar: back arrow + "Recognition"
+- ScrollView with recognition/awards content
 
 ### 7. InsightsActivity
-**Layout:** Toolbar + `RecyclerView` with article cards (title + summary)
+- Toolbar: back arrow + "Insights"
+- WebView loading https://sureshandco.com/resources/ (or static card list)
 
 ### 8. CareersActivity
-**Layout:** Toolbar + `ScrollView` with current openings or "No openings" message
+- Toolbar: back arrow + "Careers"
+- WebView loading https://sureshandco.com/careers/ (or static content)
 
 ---
 
 ## Navigation Drawer
-**`nav_header.xml`:** Logo + "Suresh & Co" + "Chartered Accountants"
 
-**`nav_drawer_menu.xml`** (menu resource):
+**Header (`nav_header.xml`):** Logo + "Suresh & Co" + "Chartered Accountants"
+
+**Menu (`nav_drawer_menu.xml`):**
 ```
 Group 1:
-  - Ask Query      (ic_chat icon)
-  - Recognition    (ic_emoji_events icon)
-  - Insights       (ic_article icon)
-  - Careers        (ic_person_add icon)
+  - Ask Query       (ic_chat_bubble_outline)
+  - Recognition     (ic_emoji_events)
+  - Insights        (ic_article)
+  - Careers         (ic_person_add_alt)
 
-Group 2 - Follow Us:
-  - Facebook       (ic_facebook icon)
-  - LinkedIn       (ic_linkedin icon)
-  - YouTube        (ic_youtube icon)
+Group 2 — Follow Us:
+  - Facebook        → browser intent
+  - LinkedIn        → https://in.linkedin.com/company/suresh-&-co.
+  - YouTube         → browser intent
 
 Group 3:
-  - Share          (ic_share icon)
+  - Share           → share intent (app/firm info text)
 ```
 
 ---
 
-## Services Data (8 Services)
+## Real Content
 
-| # | Name | Short Description |
+### About Us
+SURESH & CO. has been nurtured and grown over 50 years to deliver high quality, high value, timely, unique solutions for overcoming Business and Regulatory challenges.
+
+The firm believes business and wealth will grow after having the right and in-depth awareness of Tax, Accounting and Regulatory policies. Having in place the right policies, which evolve as business grows, produces highest possible turnover, maximum profits, faster cash flows and a stronger balance sheet.
+
+Suresh & Co. provides services to 750+ active clients globally. Located at Bengaluru – the IT capital of India, and Chennai – the Detroit of India, with associates in Hyderabad, Mumbai, Delhi, other major cities and the USA. Represented by a strong 120+ team including 30+ Chartered Accountants, Company Secretaries and other technically qualified persons.
+
+### Vision & Mission
+**Vision:** To turn knowledge into immense value for the benefit and betterment of the clients, the team, capital markets and the society.
+
+**Mission:** To believe good isn't good enough and there is always scope for something better — ensuring the best of our knowledge, skills and talents are deployed so clients get the best professional services.
+
+### Services (8)
+
+| # | Name | Description |
 |---|---|---|
-| 1 | Management Support Services | Business management advisory & operational support for family businesses |
-| 2 | Audit & Assurance | Statutory, internal, and concurrent audit services |
-| 3 | M&A Transaction Services | Merger & acquisition advisory, due diligence, and valuation |
-| 4 | Investment Banking for Family Business | Capital raising, structuring, and financial advisory |
-| 5 | Policy Framework – Tax, Accounting and Regulatory | Compliance, policy design, tax planning |
-| 6 | Family Business Reorganization & Succession Planning | Structuring ownership and leadership transitions |
-| 7 | MyFAME© HNI Services | Exclusive high-net-worth individual financial management |
-| 8 | Traditional CA Services | Accounting, taxation, GST, and related compliance |
+| 1 | Management Support Services | Provides management insight on business performance effectiveness — growth in revenue, profits, cash flows, and EBITDA. Critically reviews organisational structure, policies, plans, systems, procedures, and methods of control. Suggests improvements and helps make decisions on make-or-buy, acquisitions, and rehabilitation of sick units. |
+| 2 | Audit & Assurance | Instils trust and confidence in financial statements. Engenders wider 'intangible' benefits including imposing discipline on companies and deterring fraud. Provides comfort that internal accounting processes are generating reliable information to assist management in governance and statutory duties. |
+| 3 | M&A Transaction Services | Advisory on mergers and acquisitions including due diligence, valuation, deal structuring, and negotiation support. |
+| 4 | Investment Banking for Family Business | Careful advisory at the intersection of family and personal considerations of ownership, coupled with strategic considerations for the future. Capital raising, structuring, and financial advisory tailored to family-owned businesses. |
+| 5 | Policy Framework – Tax, Accounting and Regulatory | Designing and implementing the right policies covering tax planning, accounting standards, and regulatory compliance, which evolve as business grows. |
+| 6 | Family Business Reorganization & Succession Planning | Advises family-run businesses on structure, timing, run-out models and support years when transitioning ownership. Helps identify the right acquirers, assesses business value, and unlocks full potential to get the right price. |
+| 7 | MyFAME© HNI Services | Serves 400+ HNIs — highly educated, talented, tech-savvy individuals who have largely created their own wealth. Deep understanding of tax implications and financial document requirements for high-net-worth individuals. |
+| 8 | Traditional CA Services | Comprehensive accounting, direct/indirect taxation, GST, company law compliance, and related services — respecting the firm's 50-year lineage in traditional practice areas. |
+
+### The Team
+
+| Name | Qualification | Role |
+|---|---|---|
+| D L Suresh Babu | FCA | Founder & Managing Partner – 50+ yrs experience; Central Council Member, ICAI (1982–85) |
+| D S Vivek | FCA | Business Catalyst, Entrepreneur, Coach; formerly PricewaterhouseCoopers; 21+ yrs advising businesses globally |
+| Vikram | FCA, Licentiate ICSI | 9+ yrs Audit & Assurance; large clients in IT, financial services, manufacturing, retail, education, real estate |
+| Santhanam Narayanan | FCA, ACS, Diploma IFRS (ACCA UK) | 32+ yrs manufacturing sector; Finance, Treasury, Costing, Secretarial, Accounts, Audit |
+| Manisha Khanna | FCA | Direct Tax Litigation & Advisory; heads New Delhi operations |
+| Ramachandran | FCA | Taxation, Management Consultancy, Company Law, Business Advisory, Auditing |
+
+### Contact Info
+- **Address:** #43/61, 'Srinidhi', Ist Floor, Surveyor's Street, Basavanagudi, Bengaluru, Karnataka 560004
+- **Phone:** 080 26609560
+- **Email:** info@sureshandco.com
+- **Website:** www.sureshandco.com
+
+### Social Media
+- **LinkedIn:** https://in.linkedin.com/company/suresh-&-co.
+- **Facebook:** Search "Suresh & Co Chartered Accountants" (link to be confirmed)
+- **YouTube:** Search "Suresh & Co" (link to be confirmed)
 
 ---
 
-## Key Dependencies (`app/build.gradle`)
+## Dependencies (`app/build.gradle`)
 ```groovy
 implementation 'com.google.android.material:material:1.11.0'
 implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -168,39 +200,21 @@ implementation 'androidx.recyclerview:recyclerview:1.3.2'
 implementation 'androidx.cardview:cardview:1.0.0'
 ```
 
----
-
-## AndroidManifest.xml
-- `INTERNET` permission (for future API use)
-- `CALL_PHONE` permission (for phone dial intent)
-- All 8 Activities declared
+## Permissions (`AndroidManifest.xml`)
+- `INTERNET` (WebView, social links)
+- `CALL_PHONE` (dial intent)
 
 ---
 
 ## Implementation Order
 
-1. **Project setup** — `build.gradle`, `colors.xml`, `strings.xml`, `themes.xml`, `arrays.xml`
-2. **Model** — `Service.java`
-3. **Layouts** — all XML layouts
-4. **MainActivity** — home screen + drawer setup
-5. **ServicesActivity** — spinner + content
-6. **AskQueryActivity** — form + submission
-7. **Remaining activities** — Vision/Mission, Team, Recognition, Insights, Careers
-8. **Contact intents** — phone, email, map, browser
-9. **Social media links** — Facebook, LinkedIn, YouTube via browser intent
-10. **Share intent** — share app/firm details
-
----
-
-## Contact Info (hardcoded)
-- **Address:** #43/61, 'Srinidhi', Ist Floor, Surveyor's Street, Basavanagudi, Bengaluru, Karnataka 560004
-- **Phone:** 080 26609560
-- **Email:** info@sureshandco.com
-- **Website:** www.sureshandco.com
-
----
-
-## Social Media
-- Facebook: facebook.com/sureshandco (to confirm)
-- LinkedIn: linkedin.com/company/sureshandco (to confirm)
-- YouTube: youtube.com/@sureshandco (to confirm)
+1. Project setup — Gradle, `colors.xml`, `strings.xml`, `themes.xml`, `arrays.xml`
+2. `Service.java` model
+3. All XML layouts
+4. `MainActivity` — home scroll + drawer
+5. `ServicesActivity`
+6. `AskQueryActivity`
+7. `VisionMissionActivity`, `TheTeamActivity`
+8. `RecognitionActivity`, `InsightsActivity`, `CareersActivity`
+9. Contact intents (phone, email, map, browser)
+10. Social media + share intents
