@@ -25,37 +25,29 @@
 
 ## Design System
 
-### Color Palette — White + Brand Blue + Gold
-Derived directly from the Suresh & Co logo:
-- Arc text & ribbon → **brand blue** (`#1565C0`)
-- "50 Years" numeral → **purple/violet** accent
-- "Years" text & badge detail → **warm gold** (`#C9920A`)
-- Overall app bg in original → **white**
+### Color Palette — White + Brand Blue (two-color)
+Strict two-color system matching the Suresh & Co brand:
 
 | Token | Value | Usage |
 |---|---|---|
-| `brandBlue` | `#1565C0` | App bar, drawer header, primary buttons, service tiles, section headings |
-| `brandBlueDark` | `#0D47A1` | Pressed states, shadows, deep accents |
-| `brandBlueLight` | `#1E88E5` | Hover/focus tint, icon fills |
-| `blueSurface` | `#E8F0FE` | Subtle blue-tinted card backgrounds |
-| `gold` | `#C9920A` | Highlights, badges, "50 Years" accent, active indicator |
-| `goldLight` | `#FFF3CD` | Gold-tinted chips, banners, tag backgrounds |
-| `purple` | `#6A1B9A` | Tertiary accent only — used very sparingly (logo nod) |
+| `brandBlue` | `#1565C0` | App bar, drawer header, primary buttons, service tiles, section headings, icons |
+| `brandBlueDark` | `#0D47A1` | Pressed/active states, deep shadows |
+| `brandBlueLight` | `#1E88E5` | Focus rings, lighter icon tints |
+| `blueSurface` | `#E8F0FE` | Subtle blue wash on alternate sections |
 | `background` | `#FFFFFF` | All screen backgrounds |
 | `surface` | `#FFFFFF` | Cards, modals, inputs |
-| `surfaceGrey` | `#F5F7FA` | Alternate section backgrounds, input fills |
-| `textPrimary` | `#1A1A2E` | All body/heading text |
+| `surfaceGrey` | `#F5F7FA` | Input fills, alternate row backgrounds |
+| `textPrimary` | `#1A1A2E` | Headings and body text |
 | `textSecondary` | `#5C6B8A` | Subtitles, captions, helper text |
-| `textOnBlue` | `#FFFFFF` | Text/icons on blue backgrounds |
+| `textOnBlue` | `#FFFFFF` | Text and icons on blue backgrounds |
 | `divider` | `#E3E8F0` | Borders, separators |
 | `error` | `#D32F2F` | Validation errors |
 
 ### Visual Tone
-- Backgrounds: always white or very light grey — airy and clean
-- Blue is **dominant**: app bar, service tiles, buttons, section headers
-- Gold is **sparingly used**: badges, active underlines, key highlights, "50 Years" chip
-- Purple is a **logo nod only**: one small decorative use max (e.g. "50" on hero)
-- No dark backgrounds anywhere — consistent with original app feel
+- **Two colors only: white and brand blue** — no gold, no purple, no other accents
+- White is the canvas everywhere; blue does all the work
+- Depth and hierarchy achieved through blue shades (`#1565C0` → `#0D47A1` → `#E8F0FE`)
+- Clean, corporate, professional — lets the content breathe
 
 ### Typography — Poppins (via expo-google-fonts)
 | Style | Weight | Size |
@@ -126,18 +118,18 @@ suresh-and-co/
 │   │   │   ├── AppDrawer.tsx       ← Side navigation drawer
 │   │   │   └── ScreenWrapper.tsx   ← Common screen wrapper
 │   │   ├── home/
-│   │   │   ├── HeroHeader.tsx      ← Logo, tagline, gold badge
+│   │   │   ├── HeroHeader.tsx      ← Logo, tagline
 │   │   │   ├── StatsRow.tsx        ← Animated count-up stats
 │   │   │   ├── AskExpertBanner.tsx ← Shimmer CTA banner
 │   │   │   ├── AboutSection.tsx    ← About Us card
 │   │   │   ├── ServicesGrid.tsx    ← 2-col animated grid
 │   │   │   └── ContactSection.tsx  ← Tappable contact rows
 │   │   ├── shared/
-│   │   │   ├── SectionHeader.tsx   ← Gold-accented heading
+│   │   │   ├── SectionHeader.tsx   ← Blue-accented heading
 │   │   │   ├── ServiceTile.tsx     ← Animated service card
 │   │   │   ├── TeamMemberCard.tsx  ← Partner profile card
 │   │   │   ├── PressableScale.tsx  ← Scale-on-press wrapper
-│   │   │   └── GoldDivider.tsx     ← Decorative gold divider
+│   │   │   └── BlueDivider.tsx     ← Decorative blue divider
 │   └── utils/
 │       └── launcher.ts             ← Phone/email/URL openers
 ├── assets/
@@ -152,17 +144,17 @@ suresh-and-co/
 
 ### Home Screen (`app/index.tsx`)
 Scrollable `ScrollView` with sections:
-1. **Hero Header** — White background, logo centred, "50 Years" gold badge chip (echoing logo), tagline "Ever lasting relationship" in bold, fade-in + slight slide-down on load
-2. **Stats Row** — `750+ Clients` | `120+ Team` | `50+ Years` — blue numbers, animated count-up on mount, thin gold underline accent
-3. **Ask Expert Banner** — Blue background card (`#1565C0`) with white text, chat icon, subtle shimmer pulse → navigates to Ask Query
-4. **About Us** — White card, "About Us" section heading in brand blue, body text, "Vision & Mission" + "The Team" outline-style buttons (blue border + blue text)
-5. **Services** — Section heading in brand blue, 2-column grid of 8 tiles (blue fill `#1565C0`, white text/icon), staggered animation, "View All Services →" in blue
+1. **Hero Header** — White background, logo centred, tagline "Ever lasting relationship" in bold dark text, fade-in + slight slide-down on load
+2. **Stats Row** — `750+ Clients` | `120+ Team` | `50+ Years` — brand blue numbers on white, animated count-up on mount
+3. **Ask Expert Banner** — Brand blue card with white text and chat icon, subtle shimmer pulse → navigates to Ask Query
+4. **About Us** — White card, "About Us" heading in brand blue, body text in dark, "Vision & Mission" + "The Team" outline buttons (blue border + blue text)
+5. **Services** — Section heading in brand blue, 2-column grid of 8 tiles (blue fill, white text/icon), staggered animation, "View All Services →" in blue
 6. **Contact Us** — White card, section heading in brand blue, each row has blue icon + dark text, tappable with ripple
 
 ### Services Screen (`app/services.tsx`)
 - Styled dropdown picker for 8 services
 - Animated expand/collapse for selected service description
-- Gold left-border accent on active service
+- Brand blue left-border accent on active service
 
 ### Ask Query Screen (`app/ask-query.tsx`)
 - Category picker (General / Tax / Audit / Company Law / GST / FEMA / Others)
@@ -172,11 +164,11 @@ Scrollable `ScrollView` with sections:
 
 ### Vision & Mission (`app/vision-mission.tsx`)
 - Vision section (navy heading + body)
-- Gold divider
+- Blue divider
 - Mission section
 
 ### The Team (`app/the-team.tsx`)
-- Staggered-animated cards: name, gold qualification badge, bio
+- Staggered-animated cards: name in brand blue, qualification label, bio text
 
 ### Recognition (`app/recognition.tsx`)
 - Award cards with icon + text
@@ -190,15 +182,15 @@ Scrollable `ScrollView` with sections:
 ---
 
 ## Navigation Drawer (`AppDrawer.tsx`)
-- **Header:** Brand blue bg (`#1565C0`), logo centred, "Chartered Accountants" subtitle in gold (`#C9920A`)
+- **Header:** Brand blue bg (`#1565C0`), logo centred, "Chartered Accountants" subtitle in white
 - **Body bg:** White
-- **Items (blue icons + dark text, gold active indicator):**
+- **Items (blue icons + dark text, blue active highlight):**
   - Home
   - Ask Query
   - Recognition
   - Insights
   - Careers
-  - — *Follow Us* — (gold divider label)
+  - — *Follow Us* — (blue divider label)
   - Facebook (mock → https://www.facebook.com/sureshandco)
   - LinkedIn (→ https://in.linkedin.com/company/suresh-&-co.)
   - YouTube (mock → https://www.youtube.com/@sureshandco)
@@ -280,7 +272,7 @@ Serving 750+ active clients globally. Offices in Bengaluru (IT capital of India)
 1. Expo project scaffold + `app.json` + `package.json`
 2. `src/theme/` — colors, typography, spacing
 3. `src/data/` + `src/types/` — all static data and types
-4. Shared components — `SectionHeader`, `PressableScale`, `GoldDivider`, `ServiceTile`, `TeamMemberCard`
+4. Shared components — `SectionHeader`, `PressableScale`, `BlueDivider`, `ServiceTile`, `TeamMemberCard`
 5. `AppDrawer.tsx` + root `_layout.tsx`
 6. Home screen + all sub-components (Hero, Stats, Banner, About, Grid, Contact)
 7. `services.tsx`
