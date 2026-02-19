@@ -6,12 +6,8 @@ import {
   ScrollView,
   Image,
   Share,
-  Platform,
 } from 'react-native';
-import {
-  DrawerContentScrollView,
-  DrawerContentComponentProps,
-} from '@react-navigation/drawer';
+import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, usePathname } from 'expo-router';
 import { colors } from '../../theme/colors';
