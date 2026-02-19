@@ -25,19 +25,37 @@
 
 ## Design System
 
-### Color Palette — Navy + Gold (Premium Professional)
+### Color Palette — White + Brand Blue + Gold
+Derived directly from the Suresh & Co logo:
+- Arc text & ribbon → **brand blue** (`#1565C0`)
+- "50 Years" numeral → **purple/violet** accent
+- "Years" text & badge detail → **warm gold** (`#C9920A`)
+- Overall app bg in original → **white**
+
 | Token | Value | Usage |
 |---|---|---|
-| `navyDark` | `#0A1628` | App bar, drawer header, primary buttons |
-| `navyMid` | `#1A2F4A` | Section headers, active states |
-| `gold` | `#C9A256` | Accents, highlights, active icons |
-| `goldLight` | `#F0D98C` | Subtle gold tints |
-| `background` | `#FAFAFA` | Screen backgrounds |
-| `surface` | `#FFFFFF` | Cards, inputs |
-| `textPrimary` | `#0A1628` | Headings, body |
-| `textSecondary` | `#64748B` | Subtitles, captions |
-| `divider` | `#E2E8F0` | Borders, dividers |
-| `error` | `#DC2626` | Validation errors |
+| `brandBlue` | `#1565C0` | App bar, drawer header, primary buttons, service tiles, section headings |
+| `brandBlueDark` | `#0D47A1` | Pressed states, shadows, deep accents |
+| `brandBlueLight` | `#1E88E5` | Hover/focus tint, icon fills |
+| `blueSurface` | `#E8F0FE` | Subtle blue-tinted card backgrounds |
+| `gold` | `#C9920A` | Highlights, badges, "50 Years" accent, active indicator |
+| `goldLight` | `#FFF3CD` | Gold-tinted chips, banners, tag backgrounds |
+| `purple` | `#6A1B9A` | Tertiary accent only — used very sparingly (logo nod) |
+| `background` | `#FFFFFF` | All screen backgrounds |
+| `surface` | `#FFFFFF` | Cards, modals, inputs |
+| `surfaceGrey` | `#F5F7FA` | Alternate section backgrounds, input fills |
+| `textPrimary` | `#1A1A2E` | All body/heading text |
+| `textSecondary` | `#5C6B8A` | Subtitles, captions, helper text |
+| `textOnBlue` | `#FFFFFF` | Text/icons on blue backgrounds |
+| `divider` | `#E3E8F0` | Borders, separators |
+| `error` | `#D32F2F` | Validation errors |
+
+### Visual Tone
+- Backgrounds: always white or very light grey — airy and clean
+- Blue is **dominant**: app bar, service tiles, buttons, section headers
+- Gold is **sparingly used**: badges, active underlines, key highlights, "50 Years" chip
+- Purple is a **logo nod only**: one small decorative use max (e.g. "50" on hero)
+- No dark backgrounds anywhere — consistent with original app feel
 
 ### Typography — Poppins (via expo-google-fonts)
 | Style | Weight | Size |
@@ -134,12 +152,12 @@ suresh-and-co/
 
 ### Home Screen (`app/index.tsx`)
 Scrollable `ScrollView` with sections:
-1. **Hero Header** — Navy background, Suresh & Co logo, "50 Years" gold badge chip, tagline, fade-in on load
-2. **Stats Row** — `750+ Clients` | `120+ Team` | `50+ Years` — animated count-up
-3. **Ask Expert Banner** — Gold shimmer card → navigates to Ask Query
-4. **About Us** — White card with body text + "Vision & Mission" and "The Team" buttons
-5. **Services** — 2-column grid (8 tiles with icons) + "View All Services →"
-6. **Contact Us** — Card: address, phone (tel:), email (mailto:), website (https:)
+1. **Hero Header** — White background, logo centred, "50 Years" gold badge chip (echoing logo), tagline "Ever lasting relationship" in bold, fade-in + slight slide-down on load
+2. **Stats Row** — `750+ Clients` | `120+ Team` | `50+ Years` — blue numbers, animated count-up on mount, thin gold underline accent
+3. **Ask Expert Banner** — Blue background card (`#1565C0`) with white text, chat icon, subtle shimmer pulse → navigates to Ask Query
+4. **About Us** — White card, "About Us" section heading in brand blue, body text, "Vision & Mission" + "The Team" outline-style buttons (blue border + blue text)
+5. **Services** — Section heading in brand blue, 2-column grid of 8 tiles (blue fill `#1565C0`, white text/icon), staggered animation, "View All Services →" in blue
+6. **Contact Us** — White card, section heading in brand blue, each row has blue icon + dark text, tappable with ripple
 
 ### Services Screen (`app/services.tsx`)
 - Styled dropdown picker for 8 services
@@ -172,14 +190,15 @@ Scrollable `ScrollView` with sections:
 ---
 
 ## Navigation Drawer (`AppDrawer.tsx`)
-- **Header:** Navy bg, logo, "Chartered Accountants" in gold
-- **Items (with gold icons):**
+- **Header:** Brand blue bg (`#1565C0`), logo centred, "Chartered Accountants" subtitle in gold (`#C9920A`)
+- **Body bg:** White
+- **Items (blue icons + dark text, gold active indicator):**
   - Home
   - Ask Query
   - Recognition
   - Insights
   - Careers
-  - — Follow Us —
+  - — *Follow Us* — (gold divider label)
   - Facebook (mock → https://www.facebook.com/sureshandco)
   - LinkedIn (→ https://in.linkedin.com/company/suresh-&-co.)
   - YouTube (mock → https://www.youtube.com/@sureshandco)
