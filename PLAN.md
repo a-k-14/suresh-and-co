@@ -1,142 +1,189 @@
-# Suresh & Co Android App — Rebuild Plan
+# Suresh & Co — Mobile App Rebuild Plan
 
-## Overview
-Recreate the Android app (Java + XML) for **Suresh & Co**, a Chartered Accountants firm in Bengaluru with 50+ years of experience.
+## Stack Decision: React Native + Expo + TypeScript
 
-- **Package:** `com.sureshandco.app`
-- **Language:** Java
-- **UI:** XML layouts
-- **Min SDK:** 21 (Android 5.0 Lollipop)
-- **Target SDK:** 34
-- **Navigation:** DrawerLayout + NavigationView
-- **Website:** https://sureshandco.com
+### Framework: React Native (Expo managed workflow)
+- **Language:** TypeScript — universally understood by all AI (Claude, ChatGPT, Gemini, Copilot)
+- **Platform:** iOS + Android from single codebase
+- **Expo:** Managed workflow — zero native config, no Xcode/Android Studio needed to run
+- **Min SDK:** Android 5.0 / iOS 13+
+- **Package name:** `com.sureshandco.app`
+
+### Why this stack for long-term AI maintainability
+| | React Native + Expo + TypeScript | Flutter + Dart |
+|---|---|---|
+| AI training data coverage | Enormous (JS/TS most common) | Decent but much less |
+| ChatGPT / Gemini accuracy | Very high | Medium — prone to Dart API hallucinations |
+| No native config headaches | Expo handles it all | Requires Xcode/Android Studio |
+| Community & Stack Overflow | Massive | Growing but smaller |
+| Switch AI tools mid-project | Zero friction | Risk of inconsistency |
+| Animations (Reanimated 3 + Moti) | Smooth, well-documented | Marginally smoother but not worth the trade-off |
+
+**Bottom line:** Any AI (Claude, ChatGPT, Gemini, Copilot) can maintain this project confidently. TypeScript + Expo is the safest long-term choice.
 
 ---
 
-## App Color Scheme
-| Token | Hex |
+## Design System
+
+### Color Palette — Navy + Gold (Premium Professional)
+| Token | Value | Usage |
+|---|---|---|
+| `navyDark` | `#0A1628` | App bar, drawer header, primary buttons |
+| `navyMid` | `#1A2F4A` | Section headers, active states |
+| `gold` | `#C9A256` | Accents, highlights, active icons |
+| `goldLight` | `#F0D98C` | Subtle gold tints |
+| `background` | `#FAFAFA` | Screen backgrounds |
+| `surface` | `#FFFFFF` | Cards, inputs |
+| `textPrimary` | `#0A1628` | Headings, body |
+| `textSecondary` | `#64748B` | Subtitles, captions |
+| `divider` | `#E2E8F0` | Borders, dividers |
+| `error` | `#DC2626` | Validation errors |
+
+### Typography — Poppins (via expo-google-fonts)
+| Style | Weight | Size |
+|---|---|---|
+| Display | 600 SemiBold | 28 |
+| Headline | 600 SemiBold | 22 |
+| Title | 500 Medium | 18 |
+| Body | 400 Regular | 15 |
+| Caption | 400 Regular | 12 |
+| Button | 600 SemiBold | 14 |
+
+### Shape
+- Cards: `borderRadius: 16`
+- Buttons: `borderRadius: 12`
+- Inputs: `borderRadius: 12`
+- Service tiles: `borderRadius: 16`
+
+---
+
+## Micro Animations (Moti + Reanimated 3)
+
+| Element | Animation |
 |---|---|
-| Primary (blue) | `#1565C0` |
-| Primary Dark | `#003c8f` |
-| Accent | `#5E92F3` |
-| Background | `#FFFFFF` |
-| Card Surface | `#F5F5F5` |
-| Text Primary | `#212121` |
-| Text Secondary | `#757575` |
+| Stats row (750+, 120+, 50+) | Count-up on mount |
+| Service grid cards | Staggered fade + slide-up (60ms delay each) |
+| Screen transitions | Custom fade + slide via `react-navigation` options |
+| Service tile → detail | Shared element-style scale transition |
+| Ask Query banner | Subtle shimmer pulse (looping) |
+| Drawer | Built-in slide + overlay fade |
+| Buttons | Scale to 0.96 on press |
+| Contact row icons | Bounce on tap |
+| Team cards | Fade-in staggered |
+| Hero header | Fade + slide-down on load |
 
 ---
 
 ## Project File Structure
 
 ```
-app/
-├── src/main/
-│   ├── java/com/sureshandco/app/
-│   │   ├── MainActivity.java
-│   │   ├── ServicesActivity.java
-│   │   ├── AskQueryActivity.java
-│   │   ├── VisionMissionActivity.java
-│   │   ├── TheTeamActivity.java
-│   │   ├── RecognitionActivity.java
-│   │   ├── InsightsActivity.java
-│   │   ├── CareersActivity.java
-│   │   └── model/
-│   │       └── Service.java
-│   └── res/
-│       ├── layout/
-│       │   ├── activity_main.xml
-│       │   ├── activity_services.xml
-│       │   ├── activity_ask_query.xml
-│       │   ├── activity_vision_mission.xml
-│       │   ├── activity_the_team.xml
-│       │   ├── activity_recognition.xml
-│       │   ├── activity_insights.xml
-│       │   ├── activity_careers.xml
-│       │   ├── nav_header.xml
-│       │   └── item_service_grid.xml
-│       ├── menu/
-│       │   └── nav_drawer_menu.xml
-│       ├── values/
-│       │   ├── colors.xml
-│       │   ├── strings.xml
-│       │   ├── themes.xml
-│       │   └── arrays.xml
-│       └── AndroidManifest.xml
-└── build.gradle
+suresh-and-co/
+├── app.json                        ← Expo config
+├── package.json
+├── tsconfig.json
+├── app/                            ← expo-router file-based routing
+│   ├── _layout.tsx                 ← Root layout (drawer navigator)
+│   ├── index.tsx                   ← Home screen
+│   ├── services.tsx                ← All services
+│   ├── ask-query.tsx               ← Ask Query form
+│   ├── vision-mission.tsx
+│   ├── the-team.tsx
+│   ├── recognition.tsx
+│   ├── insights.tsx
+│   └── careers.tsx
+├── src/
+│   ├── theme/
+│   │   ├── colors.ts               ← Color constants
+│   │   ├── typography.ts           ← Text style presets
+│   │   └── spacing.ts              ← Spacing scale
+│   ├── data/
+│   │   ├── services.ts             ← 8 services (name, icon, description)
+│   │   ├── team.ts                 ← 6 team members
+│   │   └── constants.ts            ← Contact info, social links
+│   ├── types/
+│   │   ├── service.ts
+│   │   └── team-member.ts
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── AppDrawer.tsx       ← Side navigation drawer
+│   │   │   └── ScreenWrapper.tsx   ← Common screen wrapper
+│   │   ├── home/
+│   │   │   ├── HeroHeader.tsx      ← Logo, tagline, gold badge
+│   │   │   ├── StatsRow.tsx        ← Animated count-up stats
+│   │   │   ├── AskExpertBanner.tsx ← Shimmer CTA banner
+│   │   │   ├── AboutSection.tsx    ← About Us card
+│   │   │   ├── ServicesGrid.tsx    ← 2-col animated grid
+│   │   │   └── ContactSection.tsx  ← Tappable contact rows
+│   │   ├── shared/
+│   │   │   ├── SectionHeader.tsx   ← Gold-accented heading
+│   │   │   ├── ServiceTile.tsx     ← Animated service card
+│   │   │   ├── TeamMemberCard.tsx  ← Partner profile card
+│   │   │   ├── PressableScale.tsx  ← Scale-on-press wrapper
+│   │   │   └── GoldDivider.tsx     ← Decorative gold divider
+│   └── utils/
+│       └── launcher.ts             ← Phone/email/URL openers
+├── assets/
+│   ├── images/
+│   │   └── logo.png
+│   └── adaptive-icon.png
 ```
 
 ---
 
-## Screens & Layouts
+## Screens Detail
 
-### 1. MainActivity (Home + DrawerLayout)
-- Toolbar: "Suresh & Co" + hamburger icon
-- `NestedScrollView` with:
-  1. **Header:** Logo + "Suresh & Co – 50 Years" + tagline *"Ever lasting relationship"*
-  2. **Ask Expert banner:** Blue strip → "Ask the expert team your queries ›" → opens `AskQueryActivity`
-  3. **About Us card:** Company description text (see content below)
-  4. **Buttons row:** "Vision & Mission" | "The Team"
-  5. **Services section:** 2-column grid of 8 tiles + "All Services →" link
-  6. **Contact Us card:** Address, phone (dial intent), email (mailto intent), website (browser intent)
-- Navigation Drawer (see below)
+### Home Screen (`app/index.tsx`)
+Scrollable `ScrollView` with sections:
+1. **Hero Header** — Navy background, Suresh & Co logo, "50 Years" gold badge chip, tagline, fade-in on load
+2. **Stats Row** — `750+ Clients` | `120+ Team` | `50+ Years` — animated count-up
+3. **Ask Expert Banner** — Gold shimmer card → navigates to Ask Query
+4. **About Us** — White card with body text + "Vision & Mission" and "The Team" buttons
+5. **Services** — 2-column grid (8 tiles with icons) + "View All Services →"
+6. **Contact Us** — Card: address, phone (tel:), email (mailto:), website (https:)
 
-### 2. ServicesActivity
-- Toolbar: back arrow + "Services"
-- Subtitle: "Select the Service to know more"
-- `Spinner` populated with 8 service names
-- `ScrollView` → `TextView` showing selected service description
+### Services Screen (`app/services.tsx`)
+- Styled dropdown picker for 8 services
+- Animated expand/collapse for selected service description
+- Gold left-border accent on active service
 
-### 3. AskQueryActivity
-- Toolbar: back arrow + "Ask Query"
-- Intro description text
-- Label: "Select the category for Expert advice:"
-- `Spinner`: General, Tax, Audit, Company Law, GST, FEMA, Others
-- `TextInputLayout` → `EditText`: "Please type your query title"
-- `TextInputLayout` → `EditText` (multiline, 4 lines): "Please type your query details"
-- `Button`: "SUBMIT QUERY" (full width, blue) → sends email intent to info@sureshandco.com
+### Ask Query Screen (`app/ask-query.tsx`)
+- Category picker (General / Tax / Audit / Company Law / GST / FEMA / Others)
+- Title input
+- Details multiline input
+- "SUBMIT QUERY" button → opens mailto: with pre-filled to/subject/body
 
-### 4. VisionMissionActivity
-- Toolbar: back arrow + "Vision & Mission"
-- ScrollView with Vision heading + text, Mission heading + text
+### Vision & Mission (`app/vision-mission.tsx`)
+- Vision section (navy heading + body)
+- Gold divider
+- Mission section
 
-### 5. TheTeamActivity
-- Toolbar: back arrow + "The Team"
-- ScrollView listing each partner's name, qualification, and bio
+### The Team (`app/the-team.tsx`)
+- Staggered-animated cards: name, gold qualification badge, bio
 
-### 6. RecognitionActivity
-- Toolbar: back arrow + "Recognition"
-- ScrollView with recognition/awards content
+### Recognition (`app/recognition.tsx`)
+- Award cards with icon + text
 
-### 7. InsightsActivity
-- Toolbar: back arrow + "Insights"
-- WebView loading https://sureshandco.com/resources/ (or static card list)
+### Insights (`app/insights.tsx`)
+- `WebView` → https://sureshandco.com/resources/
 
-### 8. CareersActivity
-- Toolbar: back arrow + "Careers"
-- WebView loading https://sureshandco.com/careers/ (or static content)
+### Careers (`app/careers.tsx`)
+- `WebView` → https://sureshandco.com/careers/
 
 ---
 
-## Navigation Drawer
-
-**Header (`nav_header.xml`):** Logo + "Suresh & Co" + "Chartered Accountants"
-
-**Menu (`nav_drawer_menu.xml`):**
-```
-Group 1:
-  - Ask Query       (ic_chat_bubble_outline)
-  - Recognition     (ic_emoji_events)
-  - Insights        (ic_article)
-  - Careers         (ic_person_add_alt)
-
-Group 2 — Follow Us:
-  - Facebook        → browser intent
-  - LinkedIn        → https://in.linkedin.com/company/suresh-&-co.
-  - YouTube         → browser intent
-
-Group 3:
-  - Share           → share intent (app/firm info text)
-```
+## Navigation Drawer (`AppDrawer.tsx`)
+- **Header:** Navy bg, logo, "Chartered Accountants" in gold
+- **Items (with gold icons):**
+  - Home
+  - Ask Query
+  - Recognition
+  - Insights
+  - Careers
+  - — Follow Us —
+  - Facebook (mock → https://www.facebook.com/sureshandco)
+  - LinkedIn (→ https://in.linkedin.com/company/suresh-&-co.)
+  - YouTube (mock → https://www.youtube.com/@sureshandco)
+  - Share
 
 ---
 
@@ -145,76 +192,81 @@ Group 3:
 ### About Us
 SURESH & CO. has been nurtured and grown over 50 years to deliver high quality, high value, timely, unique solutions for overcoming Business and Regulatory challenges.
 
-The firm believes business and wealth will grow after having the right and in-depth awareness of Tax, Accounting and Regulatory policies. Having in place the right policies, which evolve as business grows, produces highest possible turnover, maximum profits, faster cash flows and a stronger balance sheet.
+Business and wealth will grow after having the right and in-depth awareness of Tax, Accounting and Regulatory policies. Having in place the right policies — which evolve as business grows — produces highest possible turnover, maximum profits, faster cash flows and a stronger balance sheet.
 
-Suresh & Co. provides services to 750+ active clients globally. Located at Bengaluru – the IT capital of India, and Chennai – the Detroit of India, with associates in Hyderabad, Mumbai, Delhi, other major cities and the USA. Represented by a strong 120+ team including 30+ Chartered Accountants, Company Secretaries and other technically qualified persons.
+Serving 750+ active clients globally. Offices in Bengaluru (IT capital of India) and Chennai, with associates in Hyderabad, Mumbai, Delhi, and the USA. Represented by 120+ professionals including 30+ Chartered Accountants, Company Secretaries and technically qualified persons.
 
 ### Vision & Mission
 **Vision:** To turn knowledge into immense value for the benefit and betterment of the clients, the team, capital markets and the society.
 
-**Mission:** To believe good isn't good enough and there is always scope for something better — ensuring the best of our knowledge, skills and talents are deployed so clients get the best professional services.
+**Mission:** Good isn't good enough — there is always scope for something better. Deploying the best of our knowledge, skills and talents so clients get the best professional services.
 
-### Services (8)
+### 8 Services
+1. **Management Support Services** — Management insight on business performance: revenue, profits, EBITDA, cash flows. Reviews organisational structure, policies, systems and controls. Concentrates on improving efficiencies and overcoming weaknesses.
+2. **Audit & Assurance** — Instils trust in financial statements. Deters fraud, imposes financial discipline. Provides comfort that internal accounting processes generate reliable information for governance and statutory duties.
+3. **M&A Transaction Services** — Advisory on mergers & acquisitions: due diligence, valuation, deal structuring, and negotiation support for family and corporate businesses.
+4. **Investment Banking for Family Business** — Careful advisory at the intersection of family, personal, and strategic considerations. Capital raising, structuring, and financial advisory tailored to family-owned businesses.
+5. **Policy Framework – Tax, Accounting and Regulatory** — Designing and implementing right policies covering tax planning, accounting standards, and regulatory compliance that evolve as business grows.
+6. **Family Business Reorganization & Succession Planning** — Advises on structure, timing, run-out models when transitioning ownership. Identifies the right acquirers, assesses business value, and unlocks its full potential.
+7. **MyFAME© HNI Services** — Serving 400+ high-net-worth individuals: educated, talented, tech-savvy, self-made. Deep expertise in tax implications and financial document requirements for HNIs.
+8. **Traditional CA Services** — Comprehensive accounting, direct & indirect taxation, GST, company law compliance — honouring 50 years of trusted practice.
 
-| # | Name | Description |
-|---|---|---|
-| 1 | Management Support Services | Provides management insight on business performance effectiveness — growth in revenue, profits, cash flows, and EBITDA. Critically reviews organisational structure, policies, plans, systems, procedures, and methods of control. Suggests improvements and helps make decisions on make-or-buy, acquisitions, and rehabilitation of sick units. |
-| 2 | Audit & Assurance | Instils trust and confidence in financial statements. Engenders wider 'intangible' benefits including imposing discipline on companies and deterring fraud. Provides comfort that internal accounting processes are generating reliable information to assist management in governance and statutory duties. |
-| 3 | M&A Transaction Services | Advisory on mergers and acquisitions including due diligence, valuation, deal structuring, and negotiation support. |
-| 4 | Investment Banking for Family Business | Careful advisory at the intersection of family and personal considerations of ownership, coupled with strategic considerations for the future. Capital raising, structuring, and financial advisory tailored to family-owned businesses. |
-| 5 | Policy Framework – Tax, Accounting and Regulatory | Designing and implementing the right policies covering tax planning, accounting standards, and regulatory compliance, which evolve as business grows. |
-| 6 | Family Business Reorganization & Succession Planning | Advises family-run businesses on structure, timing, run-out models and support years when transitioning ownership. Helps identify the right acquirers, assesses business value, and unlocks full potential to get the right price. |
-| 7 | MyFAME© HNI Services | Serves 400+ HNIs — highly educated, talented, tech-savvy individuals who have largely created their own wealth. Deep understanding of tax implications and financial document requirements for high-net-worth individuals. |
-| 8 | Traditional CA Services | Comprehensive accounting, direct/indirect taxation, GST, company law compliance, and related services — respecting the firm's 50-year lineage in traditional practice areas. |
+### Team (6 Members)
+1. **D L Suresh Babu** | FCA | Founder & Managing Partner, 50+ yrs experience, Central Council Member ICAI (1982–85)
+2. **D S Vivek** | FCA | Business Catalyst, Coach; formerly PricewaterhouseCoopers; 21+ yrs advising globally
+3. **Vikram** | FCA, Licentiate ICSI | 9+ yrs Audit & Assurance; IT, financial services, manufacturing, retail, education
+4. **Santhanam Narayanan** | FCA, ACS, Diploma IFRS (ACCA UK) | 32+ yrs manufacturing: Finance, Treasury, Audit
+5. **Manisha Khanna** | FCA | Direct Tax Litigation & Advisory; heads New Delhi operations
+6. **Ramachandran** | FCA | Taxation, Management Consultancy, Company Law, Business Advisory
 
-### The Team
+### Contact
+- Address: #43/61, 'Srinidhi', Ist Floor, Surveyor's Street, Basavanagudi, Bengaluru 560004
+- Phone: 080 26609560
+- Email: info@sureshandco.com
+- Website: www.sureshandco.com
 
-| Name | Qualification | Role |
-|---|---|---|
-| D L Suresh Babu | FCA | Founder & Managing Partner – 50+ yrs experience; Central Council Member, ICAI (1982–85) |
-| D S Vivek | FCA | Business Catalyst, Entrepreneur, Coach; formerly PricewaterhouseCoopers; 21+ yrs advising businesses globally |
-| Vikram | FCA, Licentiate ICSI | 9+ yrs Audit & Assurance; large clients in IT, financial services, manufacturing, retail, education, real estate |
-| Santhanam Narayanan | FCA, ACS, Diploma IFRS (ACCA UK) | 32+ yrs manufacturing sector; Finance, Treasury, Costing, Secretarial, Accounts, Audit |
-| Manisha Khanna | FCA | Direct Tax Litigation & Advisory; heads New Delhi operations |
-| Ramachandran | FCA | Taxation, Management Consultancy, Company Law, Business Advisory, Auditing |
-
-### Contact Info
-- **Address:** #43/61, 'Srinidhi', Ist Floor, Surveyor's Street, Basavanagudi, Bengaluru, Karnataka 560004
-- **Phone:** 080 26609560
-- **Email:** info@sureshandco.com
-- **Website:** www.sureshandco.com
-
-### Social Media
-- **LinkedIn:** https://in.linkedin.com/company/suresh-&-co.
-- **Facebook:** Search "Suresh & Co Chartered Accountants" (link to be confirmed)
-- **YouTube:** Search "Suresh & Co" (link to be confirmed)
+### Social Media (mock — update later)
+- Facebook: https://www.facebook.com/sureshandco
+- LinkedIn: https://in.linkedin.com/company/suresh-&-co.
+- YouTube: https://www.youtube.com/@sureshandco
 
 ---
 
-## Dependencies (`app/build.gradle`)
-```groovy
-implementation 'com.google.android.material:material:1.11.0'
-implementation 'androidx.appcompat:appcompat:1.6.1'
-implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-implementation 'androidx.recyclerview:recyclerview:1.3.2'
-implementation 'androidx.cardview:cardview:1.0.0'
+## Dependencies (`package.json`)
+```json
+{
+  "expo": "~52.0.0",
+  "react": "18.3.2",
+  "react-native": "0.76.5",
+  "expo-router": "~4.0.0",
+  "react-native-reanimated": "~3.16.0",
+  "moti": "^0.29.0",
+  "expo-google-fonts/poppins": "latest",
+  "expo-font": "~13.0.0",
+  "react-native-webview": "13.12.2",
+  "expo-linking": "~7.0.0",
+  "expo-mail-composer": "~13.0.0",
+  "expo-sharing": "~13.0.0",
+  "@expo/vector-icons": "^14.0.0",
+  "react-native-safe-area-context": "4.12.0",
+  "react-native-screens": "~4.1.0",
+  "@react-navigation/drawer": "^7.0.0",
+  "react-native-gesture-handler": "~2.20.0"
+}
 ```
-
-## Permissions (`AndroidManifest.xml`)
-- `INTERNET` (WebView, social links)
-- `CALL_PHONE` (dial intent)
 
 ---
 
 ## Implementation Order
-
-1. Project setup — Gradle, `colors.xml`, `strings.xml`, `themes.xml`, `arrays.xml`
-2. `Service.java` model
-3. All XML layouts
-4. `MainActivity` — home scroll + drawer
-5. `ServicesActivity`
-6. `AskQueryActivity`
-7. `VisionMissionActivity`, `TheTeamActivity`
-8. `RecognitionActivity`, `InsightsActivity`, `CareersActivity`
-9. Contact intents (phone, email, map, browser)
-10. Social media + share intents
+1. Expo project scaffold + `app.json` + `package.json`
+2. `src/theme/` — colors, typography, spacing
+3. `src/data/` + `src/types/` — all static data and types
+4. Shared components — `SectionHeader`, `PressableScale`, `GoldDivider`, `ServiceTile`, `TeamMemberCard`
+5. `AppDrawer.tsx` + root `_layout.tsx`
+6. Home screen + all sub-components (Hero, Stats, Banner, About, Grid, Contact)
+7. `services.tsx`
+8. `ask-query.tsx`
+9. `vision-mission.tsx` + `the-team.tsx`
+10. `recognition.tsx`, `insights.tsx`, `careers.tsx`
+11. `launcher.ts` + wire all intents
+12. `app.json` config (name, icon, splash, package ID)
