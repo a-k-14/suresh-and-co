@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.9)',
     lineHeight: 21,
     paddingHorizontal: spacing.md,
+    paddingTop: spacing.xs,
     paddingBottom: spacing.md,
   },
 });
