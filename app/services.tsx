@@ -8,23 +8,28 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
+import { useLocalSearchParams } from 'expo-router';
+import { useScrollToTop, useFocusEffect } from '@react-navigation/native';
 import { SERVICES } from '../src/data/services';
 import { Service } from '../src/types/service';
 import { colors } from '../src/theme/colors';
 import { spacing, radius } from '../src/theme/spacing';
 
-function ServiceAccordion({ service }: { service: Service }) {
-  const [expanded, setExpanded] = useState(false);
+interface ServiceAccordionProps {
+  service: Service;
+  isExpanded: boolean;
+  onToggle: () => void;
+}
+
+function ServiceAccordion({ service, isExpanded, onToggle }: ServiceAccordionProps) {
   const height = useSharedValue(0);
 
-  const toggle = () => {
-    if (expanded) {
-      height.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.ease) });
-    } else {
-      height.value = withTiming(200, { duration: 300, easing: Easing.out(Easing.ease) });
-    }
-    setExpanded((v) => !v);
-  };
+  React.useEffect(() => {
+    height.value = withTiming(isExpanded ? 200 : 0, {
+      duration: 300,
+      easing: Easing.out(Easing.ease),
+    });
+  }, [isExpanded]);
 
   const animStyle = useAnimatedStyle(() => ({
     height: height.value,
@@ -32,26 +37,26 @@ function ServiceAccordion({ service }: { service: Service }) {
   }));
 
   return (
-    <View style={[styles.item, expanded && styles.itemActive]}>
+    <View style={[styles.item, isExpanded && styles.itemActive]}>
       <TouchableOpacity
         activeOpacity={0.8}
-        onPress={toggle}
+        onPress={onToggle}
         style={styles.itemHeader}
       >
-        <View style={styles.iconWrap}>
+        <View style={[styles.iconWrap, isExpanded && styles.iconWrapActive]}>
           <Ionicons
             name={service.icon as keyof typeof Ionicons.glyphMap}
             size={22}
-            color={expanded ? colors.textOnBlue : colors.brandBlue}
+            color={isExpanded ? colors.brandBlue : colors.brandBlue}
           />
         </View>
-        <Text style={[styles.itemTitle, expanded && styles.itemTitleActive]}>
+        <Text style={[styles.itemTitle, isExpanded && styles.itemTitleActive]}>
           {service.title}
         </Text>
         <Ionicons
-          name={expanded ? 'chevron-up' : 'chevron-down'}
+          name={isExpanded ? 'chevron-up' : 'chevron-down'}
           size={18}
-          color={expanded ? colors.textOnBlue : colors.textSecondary}
+          color={isExpanded ? colors.textOnBlue : colors.textSecondary}
         />
       </TouchableOpacity>
       <Animated.View style={animStyle}>
@@ -62,9 +67,32 @@ function ServiceAccordion({ service }: { service: Service }) {
 }
 
 export default function ServicesScreen() {
+  const params = useLocalSearchParams<{ expandId?: string }>();
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const scrollRef = React.useRef<ScrollView>(null);
+
+  useScrollToTop(scrollRef);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
+  );
+
+  React.useEffect(() => {
+    if (params.expandId) {
+      setExpandedId(params.expandId);
+    }
+  }, [params.expandId]);
+
+  const toggleService = (id: string) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <ScrollView
+        ref={scrollRef}
         style={styles.scroll}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
@@ -73,7 +101,12 @@ export default function ServicesScreen() {
           Tap a service to learn more about what we offer.
         </Text>
         {SERVICES.map((service) => (
-          <ServiceAccordion key={service.id} service={service} />
+          <ServiceAccordion
+            key={service.id}
+            service={service}
+            isExpanded={expandedId === service.id}
+            onToggle={() => toggleService(service.id)}
+          />
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -115,6 +148,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blueSurface,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  iconWrapActive: {
+    backgroundColor: colors.surface,
   },
   itemTitle: {
     flex: 1,

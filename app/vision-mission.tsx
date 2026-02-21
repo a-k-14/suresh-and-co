@@ -3,6 +3,7 @@ import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { MotiView } from 'moti';
+import { useScrollToTop, useFocusEffect } from '@react-navigation/native';
 import { VISION, MISSION } from '../src/data/constants';
 import { colors } from '../src/theme/colors';
 import { spacing, radius } from '../src/theme/spacing';
@@ -36,9 +37,19 @@ function InfoCard({
 }
 
 export default function VisionMissionScreen() {
+  const scrollRef = React.useRef<ScrollView>(null);
+  useScrollToTop(scrollRef);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
+  );
+
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <ScrollView
+        ref={scrollRef}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >

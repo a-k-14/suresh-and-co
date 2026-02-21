@@ -7,6 +7,7 @@ export const TEAM: TeamMember[] = [
     qualification: 'FCA',
     role: 'Founder & Managing Partner',
     bio: '50+ years of experience. Central Council Member of ICAI (1982–85). The founding force behind Suresh & Co\'s legacy of excellence.',
+    icon: 'medal-outline',
   },
   {
     id: '2',
@@ -14,6 +15,7 @@ export const TEAM: TeamMember[] = [
     qualification: 'FCA',
     role: 'Business Catalyst & Coach',
     bio: 'Formerly PricewaterhouseCoopers. 21+ years advising businesses globally on strategy, growth, and value creation.',
+    icon: 'rocket-outline',
   },
   {
     id: '3',
@@ -21,6 +23,7 @@ export const TEAM: TeamMember[] = [
     qualification: 'FCA, Licentiate ICSI',
     role: 'Audit & Assurance Lead',
     bio: '9+ years in Audit & Assurance across IT, financial services, manufacturing, retail, and education sectors.',
+    icon: 'search-outline',
   },
   {
     id: '4',
@@ -28,6 +31,7 @@ export const TEAM: TeamMember[] = [
     qualification: 'FCA, ACS, Diploma IFRS (ACCA UK)',
     role: 'Finance & Treasury Expert',
     bio: '32+ years in manufacturing: Finance, Treasury, and Audit. Brings deep operational finance experience.',
+    icon: 'cash-outline',
   },
   {
     id: '5',
@@ -35,6 +39,7 @@ export const TEAM: TeamMember[] = [
     qualification: 'FCA',
     role: 'Direct Tax Litigation & Advisory',
     bio: 'Heads New Delhi operations. Specialist in direct tax litigation and advisory with extensive national practice.',
+    icon: 'document-text-outline',
   },
   {
     id: '6',
@@ -42,5 +47,6 @@ export const TEAM: TeamMember[] = [
     qualification: 'FCA',
     role: 'Taxation & Business Advisory',
     bio: 'Expert in Taxation, Management Consultancy, Company Law, and Business Advisory. Trusted advisor to diverse business clients.',
+    icon: 'business-outline',
   },
 ];

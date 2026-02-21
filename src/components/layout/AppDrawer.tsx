@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Image,
   Share,
 } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
@@ -18,6 +17,7 @@ import PressableScale from '../shared/PressableScale';
 
 const NAV_ITEMS = [
   { label: 'Home', icon: 'home-outline', route: '/' },
+  { label: 'Tax Calculator', icon: 'calculator-outline', route: '/tax-calculator' },
   { label: 'Ask Query', icon: 'chatbubble-outline', route: '/ask-query' },
   { label: 'Recognition', icon: 'ribbon-outline', route: '/recognition' },
   { label: 'Insights', icon: 'newspaper-outline', route: '/insights' },
@@ -50,11 +50,7 @@ export default function AppDrawer(props: DrawerContentComponentProps) {
     <View style={styles.root}>
       {/* Drawer header */}
       <View style={styles.header}>
-        <Image
-          source={require('../../../assets/images/logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <Text style={styles.brandTitle}>Suresh & Co</Text>
         <Text style={styles.subtitle}>Chartered Accountants</Text>
       </View>
 
@@ -123,21 +119,24 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: colors.brandBlue,
-    paddingTop: 52,
-    paddingBottom: spacing.lg,
-    paddingHorizontal: spacing.md,
-    alignItems: 'center',
+    paddingTop: 64,
+    paddingBottom: spacing.xl,
+    paddingHorizontal: spacing.lg,
+    alignItems: 'flex-start',
   },
-  logo: {
-    width: 100,
-    height: 100,
+  brandTitle: {
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 24,
+    color: colors.textOnBlue,
+    lineHeight: 32,
   },
   subtitle: {
     fontFamily: 'Poppins_500Medium',
-    fontSize: 13,
+    fontSize: 14,
     color: colors.textOnBlue,
     marginTop: spacing.xs,
-    letterSpacing: 0.5,
+    opacity: 0.9,
+    letterSpacing: 0.3,
   },
   body: {
     flex: 1,

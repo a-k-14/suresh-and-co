@@ -19,9 +19,9 @@ export const ABOUT_PARAGRAPHS = [
 ];
 
 export const STATS = [
-  { value: 750, suffix: '+', label: 'Clients' },
-  { value: 120, suffix: '+', label: 'Team' },
-  { value: 50, suffix: '+', label: 'Years' },
+  { value: 50, suffix: '+', label: 'Years of Trust' },
+  { value: 30, suffix: '+', label: 'Chartered Accountants' },
+  { value: 120, suffix: '+', label: 'Professionals' },
 ];
 
 export const VISION =

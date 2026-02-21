@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { MotiView } from 'moti';
 import { TeamMember } from '../../types/team-member';
 import { colors } from '../../theme/colors';
@@ -19,7 +20,7 @@ export default function TeamMemberCard({ member, index }: Props) {
       style={styles.card}
     >
       <View style={styles.avatar}>
-        <Text style={styles.avatarText}>{member.name.charAt(0)}</Text>
+        <Ionicons name="person-outline" size={26} color={colors.textOnBlue} />
       </View>
       <View style={styles.content}>
         <Text style={styles.name}>{member.name}</Text>

@@ -3,14 +3,25 @@ import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { MotiView } from 'moti';
+import { useScrollToTop, useFocusEffect } from '@react-navigation/native';
 import { RECOGNITIONS } from '../src/data/constants';
 import { colors } from '../src/theme/colors';
 import { spacing, radius } from '../src/theme/spacing';
 
 export default function RecognitionScreen() {
+  const scrollRef = React.useRef<ScrollView>(null);
+  useScrollToTop(scrollRef);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
+  );
+
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <ScrollView
+        ref={scrollRef}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
@@ -53,8 +64,6 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     borderWidth: 1,
     borderColor: colors.divider,
-    borderLeftWidth: 4,
-    borderLeftColor: colors.brandBlue,
   },
   iconWrap: {
     width: 52,

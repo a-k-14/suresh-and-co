@@ -28,8 +28,8 @@ export default function HeroHeader() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm,
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: colors.divider,
@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 140,
-    height: 140,
+    height: 100,
   },
   tagline: {
     fontFamily: 'Poppins_600SemiBold',
     fontSize: 20,
     color: colors.textPrimary,
-    marginTop: spacing.md,
+    marginTop: spacing.sm,
     textAlign: 'center',
   },
   sub: {

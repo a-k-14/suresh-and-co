@@ -4,6 +4,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { colors } from '../src/theme/colors';
 
+const INJECTED_JS = `
+  (function() {
+    var meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+    document.getElementsByTagName('head')[0].appendChild(meta);
+    
+    var style = document.createElement('style');
+    style.innerHTML = 'body { overflow-x: hidden !important; width: 100vw !important; } * { max-width: 100vw !important; box-sizing: border-box !important; }';
+    document.head.appendChild(style);
+  })();
+  true;
+`;
+
 export default function InsightsScreen() {
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +33,12 @@ export default function InsightsScreen() {
         style={styles.web}
         onLoad={() => setLoading(false)}
         onError={() => setLoading(false)}
+        scalesPageToFit={true}
+        showsHorizontalScrollIndicator={false}
+        containerStyle={{ overflow: 'hidden' }}
+        injectedJavaScript={INJECTED_JS}
+        javaScriptEnabled={true}
+        startInLoadingState={true}
       />
     </SafeAreaView>
   );

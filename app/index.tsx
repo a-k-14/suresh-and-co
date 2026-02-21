@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useScrollToTop, useFocusEffect } from '@react-navigation/native';
 import HeroHeader from '../src/components/home/HeroHeader';
 import StatsRow from '../src/components/home/StatsRow';
 import AskExpertBanner from '../src/components/home/AskExpertBanner';
@@ -10,9 +11,19 @@ import ContactSection from '../src/components/home/ContactSection';
 import { colors } from '../src/theme/colors';
 
 export default function HomeScreen() {
+  const scrollRef = React.useRef<ScrollView>(null);
+  useScrollToTop(scrollRef);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
+  );
+
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <ScrollView
+        ref={scrollRef}
         style={styles.scroll}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}

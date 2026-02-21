@@ -27,7 +27,12 @@ export default function ServicesGrid() {
               key={service.id}
               service={service}
               index={rowIdx * 2 + colIdx}
-              onPress={() => router.push('/services')}
+              onPress={() =>
+                router.push({
+                  pathname: '/services',
+                  params: { expandId: service.id },
+                })
+              }
             />
           ))}
           {row.length === 1 && <View style={{ flex: 1, margin: spacing.xs }} />}

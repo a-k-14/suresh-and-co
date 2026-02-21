@@ -50,19 +50,23 @@ export default function RootLayout() {
           },
           drawerType: 'front',
           swipeEnabled: true,
-          headerLeft: ({ onPress }) => (
-            <Ionicons
-              name="menu"
-              size={26}
-              color={colors.textOnBlue}
-              style={{ marginLeft: 16 }}
-              onPress={onPress}
-            />
-          ),
+          headerLeft: () => {
+            const navigation = require('@react-navigation/native').useNavigation();
+            return (
+              <Ionicons
+                name="menu"
+                size={26}
+                color={colors.textOnBlue}
+                style={{ marginLeft: 16 }}
+                onPress={() => navigation.toggleDrawer()}
+              />
+            );
+          },
         }}
       >
         <Drawer.Screen name="index" options={{ title: 'Suresh & Co' }} />
         <Drawer.Screen name="services" options={{ title: 'Our Services' }} />
+        <Drawer.Screen name="tax-calculator" options={{ title: 'Tax Calculator' }} />
         <Drawer.Screen name="ask-query" options={{ title: 'Ask Query' }} />
         <Drawer.Screen name="vision-mission" options={{ title: 'Vision & Mission' }} />
         <Drawer.Screen name="the-team" options={{ title: 'The Team' }} />

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useScrollToTop, useFocusEffect } from '@react-navigation/native';
 import { CONTACT, QUERY_CATEGORIES } from '../src/data/constants';
 import { colors } from '../src/theme/colors';
 import { spacing, radius } from '../src/theme/spacing';
@@ -17,6 +18,15 @@ import { openEmail } from '../src/utils/launcher';
 import PressableScale from '../src/components/shared/PressableScale';
 
 export default function AskQueryScreen() {
+  const scrollRef = React.useRef<ScrollView>(null);
+  useScrollToTop(scrollRef);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    }, [])
+  );
+
   const [category, setCategory] = useState('General');
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
@@ -35,6 +45,7 @@ export default function AskQueryScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <ScrollView
+        ref={scrollRef}
         style={styles.scroll}
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
