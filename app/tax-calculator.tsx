@@ -341,7 +341,7 @@ function InputField({
 function DetailRow({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
     return (
         <View style={styles.detailRow}>
-            <Text style={[styles.detailLabel, bold && styles.detailBold]}>{label}</Text>
+            <Text style={[styles.detailLabel, bold && styles.detailBold]} numberOfLines={1} ellipsizeMode="tail">{label}</Text>
             <Text style={[styles.detailValue, bold && styles.detailBold]}>{value}</Text>
         </View>
     );
@@ -515,13 +515,16 @@ const styles = StyleSheet.create({
     },
     detailLabel: {
         fontFamily: 'Poppins_400Regular',
-        fontSize: 11,
+        fontSize: 10,
         color: colors.textSecondary,
+        flex: 1,
+        marginRight: spacing.xs,
     },
     detailValue: {
         fontFamily: 'Poppins_500Medium',
-        fontSize: 11,
+        fontSize: 10,
         color: colors.textPrimary,
+        textAlign: 'right',
     },
     detailBold: {
         fontFamily: 'Poppins_600SemiBold',

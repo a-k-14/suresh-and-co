@@ -14,12 +14,10 @@ export default function HeroHeader() {
         style={styles.content}
       >
         <Image
-          source={require('../../../assets/images/logo.png')}
+          source={require('../../../assets/images/logo-50.png')}
           style={styles.logo}
           resizeMode="contain"
         />
-        <Text style={styles.tagline}>Ever lasting relationship</Text>
-        <Text style={styles.sub}>Chartered Accountants · Est. 1974</Text>
       </MotiView>
     </View>
   );
@@ -38,8 +36,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 140,
-    height: 100,
+    width: 280,
+    height: 210,
   },
   tagline: {
     fontFamily: 'Poppins_600SemiBold',

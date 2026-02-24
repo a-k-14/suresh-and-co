@@ -4,11 +4,11 @@
     "slug": "suresh-and-co",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logo.png",
+    "icon": "./assets/images/logo-50-square.png",
     "scheme": "sureshandco",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/logo.png",
+      "image": "./assets/images/logo-50-square.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },
@@ -18,18 +18,26 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo.png",
+        "foregroundImage": "./assets/images/logo-50-square.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.sureshandco.app",
-      "minSdkVersion": 21
+      "package": "com.sureshandco.app"
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "./withCustomIcons.js"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c495668b-b344-451d-8bc4-b7fce6e1dfe5"
+      }
     }
   }
 }

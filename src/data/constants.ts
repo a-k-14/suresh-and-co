@@ -20,8 +20,6 @@ export const ABOUT_PARAGRAPHS = [
 
 export const STATS = [
   { value: 50, suffix: '+', label: 'Years of Trust' },
-  { value: 30, suffix: '+', label: 'Chartered Accountants' },
-  { value: 120, suffix: '+', label: 'Professionals' },
 ];
 
 export const VISION =

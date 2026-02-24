@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 110,
+    minHeight: 120,
     gap: spacing.sm,
   },
   label: {

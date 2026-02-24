@@ -43,47 +43,55 @@ function CountUpNumber({
   );
 }
 
+import { Ionicons } from '@expo/vector-icons';
+
 export default function StatsRow() {
   return (
     <View style={styles.container}>
-      {STATS.map((stat, i) => (
-        <MotiView
-          key={stat.label}
-          from={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', delay: i * 120 }}
-          style={styles.statItem}
-        >
-          <CountUpNumber target={stat.value} suffix={stat.suffix} />
-          <Text style={styles.statLabel}>{stat.label}</Text>
-        </MotiView>
-      ))}
+      <MotiView
+        from={{ opacity: 0, translateY: 10 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ type: 'timing', duration: 800 }}
+        style={styles.statItem}
+      >
+        <Ionicons name="ribbon-outline" size={24} color={colors.brandBlue} style={styles.icon} />
+        <Text style={styles.statValue}>50+</Text>
+        <Text style={styles.statLabel}>Years of Professional Trust</Text>
+      </MotiView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     backgroundColor: colors.blueSurface,
-    paddingVertical: spacing.lg,
+    paddingVertical: spacing.md,
     paddingHorizontal: spacing.md,
-    justifyContent: 'space-around',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.divider,
   },
   statItem: {
+    flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
+    justifyContent: 'center',
+  },
+  icon: {
+    marginRight: spacing.sm,
   },
   statValue: {
     fontFamily: 'Poppins_600SemiBold',
-    fontSize: 28,
+    fontSize: 22,
     color: colors.brandBlue,
-    lineHeight: 34,
+    marginRight: spacing.xs,
   },
   statLabel: {
-    fontFamily: 'Poppins_400Regular',
+    fontFamily: 'Poppins_500Medium',
     fontSize: 13,
     color: colors.textSecondary,
-    marginTop: 2,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+    flexShrink: 1,
   },
 });
